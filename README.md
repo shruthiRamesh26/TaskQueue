@@ -83,11 +83,14 @@ In addition to the above functionality, we can make the program thread-safe if m
 
 To achieve this we can follow the below steps.
 - we can make use of concurrentLinkedQueue and concurrentHashmap
+
+```
    public TaskQueue() {
         taskQueue = new ConcurrentLinkedQueue<>();
         taskStatus = new ConcurrentHashMap<>();
         taskWorkers = new ConcurrentHashMap<>();
     }
+```
 
 - Synchronized Methods:
 
