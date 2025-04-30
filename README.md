@@ -78,4 +78,29 @@ Feel free to modify the Main class to change the sequence of tasks or add more t
 - **taskQueue.completeTask(taskId, workerId)**: Marks the task as completed if the correct worker completes it.
 - **taskQueue.failTask(taskId, workerId)**: If a task fails, it is re-enqueued for retry.
 
+## Making TaskQueue Thread-safe
+In addition to the above functionality, we can make the program thread-safe if multiple threads (workers) are running simultaneously. We need to ensure that tasks are correctly assigned, marked as in-progress, completed, or retried without interfering with each other.
+
+To achieve this we can follow the below steps.
+- we can make use of concurrentLinkedQueue and concurrentHashmap
+   public TaskQueue() {
+        taskQueue = new ConcurrentLinkedQueue<>();
+        taskStatus = new ConcurrentHashMap<>();
+        taskWorkers = new ConcurrentHashMap<>();
+    }
+
+- Synchronized Methods:
+
+The methods **enqueueTask(), assignTaskToWorker(), completeTask(), and failTask() are marked as 'synchronized'**. This ensures that only one thread can access these methods at a time, which is important because tasks are being added, assigned, completed, and retried concurrently.
+
+Although ConcurrentLinkedQueue and ConcurrentHashMap handle thread safety for their operations internally, we can still use synchronized to ensure that multiple operations on the queue or task status are consistent and atomic.
+
+Example:
+
+```
+ public synchronized void enqueueTask(int taskId) {
+//implementation
+}
+```
+
 
